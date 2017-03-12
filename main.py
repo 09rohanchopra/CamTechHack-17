@@ -1,5 +1,5 @@
 from PyQt4 import QtGui,uic,QtCore
-import sys, os
+import sys, os, time
 import cv2
 import ctypes
 
@@ -9,8 +9,10 @@ path = os.path.dirname(os.path.abspath(__file__))
 MainWindowUI, MainWindowBase = uic.loadUiType(
     os.path.join(path, 'gui.ui'))
 
+ReportPageUI, ReportPageBase = uic.loadUiType(
+    os.path.join(path, 'report.ui'))
 
-myappid = 'VeSee.scanner.0.01' 
+myappid = 'VSee.scanner.0.01' 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 class VeSeeApp(MainWindowBase, MainWindowUI):
@@ -23,6 +25,7 @@ class VeSeeApp(MainWindowBase, MainWindowUI):
         self.analysingLabel.setVisible(False)
         self.logoLabel.setPixmap(QtGui.QPixmap("logo.png"))
         self.logoLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.logoLabel.resize(50,50)
                                                             
     def start_video(self):
         print('Clicked!')
@@ -31,9 +34,14 @@ class VeSeeApp(MainWindowBase, MainWindowUI):
         self.analysingLabel.setVisible(True)
         #Function for camera
         #Function for IR
-
+        time.sleep(3)
+        self.report = ReportPage()
+        self.report.show()
         
-
+class ReportPage(ReportPageBase, ReportPageUI):
+    def __init__(self, parent=None):
+        ReportPageBase.__init__(self, parent)
+        self.setupUi(self)
 
 def main():
     app = QtGui.QApplication(sys.argv)
