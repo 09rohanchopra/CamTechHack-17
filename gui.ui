@@ -105,7 +105,7 @@
          <widget class="QLabel" name="analysingLabel">
           <property name="font">
            <font>
-            <family>Nirmala UI</family>
+            <family>Open Sans Semibold</family>
             <pointsize>20</pointsize>
             <weight>75</weight>
             <bold>true</bold>
@@ -190,7 +190,7 @@
            </property>
            <property name="font">
             <font>
-             <family>Segoe UI</family>
+             <family>Open Sans Semibold</family>
              <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>

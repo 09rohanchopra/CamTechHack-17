@@ -2,6 +2,7 @@ from PyQt4 import QtGui,uic,QtCore
 import sys, os, time
 import cv2
 import ctypes
+import face_detect
 
 # get the directory of this script
 path = os.path.dirname(os.path.abspath(__file__))
@@ -14,6 +15,8 @@ ReportPageUI, ReportPageBase = uic.loadUiType(
 
 myappid = 'VSee.scanner.0.01' 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
+
 
 class VeSeeApp(MainWindowBase, MainWindowUI):
     def __init__(self):
@@ -34,14 +37,33 @@ class VeSeeApp(MainWindowBase, MainWindowUI):
         self.analysingLabel.setVisible(True)
         #Function for camera
         #Function for IR
-        time.sleep(3)
-        self.report = ReportPage()
+        self.distance = face_detect.startH()
+        self.showReport()
+        #time.sleep(3)
+        self.close()
+    def showReport(self):
+        self.report = ReportPage(dist = self.distance)
         self.report.show()
         
 class ReportPage(ReportPageBase, ReportPageUI):
-    def __init__(self, parent=None):
+    def __init__(self, dist, parent=None):
         ReportPageBase.__init__(self, parent)
         self.setupUi(self)
+
+        self.distanceLabel.setPixmap(QtGui.QPixmap("icon_arrow.png"))
+
+        self.lEye.setPixmap(QtGui.QPixmap("eye.png"))
+        self.rEye.setPixmap(QtGui.QPixmap("eye.png"))
+
+        self.lLabel.setText('Myopia')
+        self.rLabel.setText('Hyperopia')
+
+        self.lImage.setPixmap(QtGui.QPixmap("icon_text.png"))
+        self.rImage.setPixmap(QtGui.QPixmap("icon_tree_2.png"))
+        dist = dist * 2.54 / 96
+        dist = dist * 3.88
+        print(dist)
+        self.distanceLabel.setText('%1.1fcm' %dist)
 
 def main():
     app = QtGui.QApplication(sys.argv)
